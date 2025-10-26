@@ -304,7 +304,7 @@
                 }
                 
                 // Kullanıcı bilgilerini localStorage'a kaydet
-                localStorage.setItem('aktifKullanici', JSON.stringify(data));
+                localStorage.setItem('aktifKullanici', data.kullanici_adi);
                 
                 // Başarılı!
                 showModal('✅ Giriş başarılı!', true);
