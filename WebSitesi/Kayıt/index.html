@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oturum Aç - Çekiliş Merkezi</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .input-box {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 15px;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 18px 10px 10px 16px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.15);
+            color: #f3f3f3;
+            border: 1px solid #3b3b3b;
+            border-radius: 5px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .input-box .char {
+            position: absolute;
+            left: 16px;
+            top: 18px;
+            color: #ffffff;
+            pointer-events: none;
+            transition: top 0.2s cubic-bezier(.68,-0.55,.27,1.55), color 0.2s, font-size 0.2s;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0 4px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .input-box input:focus + .char,
+        .input-box input:not(:placeholder-shown) + .char {
+            top: -10px;
+            color: #d9e4f4;
+            font-size: 14px;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #6a1b9a;
+            color: #f3f3f3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            align-self: center;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #8e24aa;
+        }
+
+        .signup-btn {
+            padding: 10px 20px;
+            background-color: #6a1b9a;
+            color: #f3f3f3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            align-self: center;
+            transition: background 0.2s;
+        }
+        .signup-btn:hover {
+            background-color: #8e24aa;
+        }
+
+        .checkbox {
+            margin-right: 10px;
+        }
+        .remember-forgot {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 20px 0;
+        }
+        .remember-forgot input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6a1b9a;
+            margin-right: 10px;
+            appearance: auto;
+            position: static;
+            opacity: 1;
+        }
+        .remember-forgot label {
+            font-size: 16px;
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            color: #fff;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            position: static;
+            padding-left: 0;
+        }
+        .form-container {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            animation: site-in 1.6s cubic-bezier(.77,0,.18,1);
+        }
+        @keyframes site-in {
+            from {
+                opacity: 0;
+                transform: scale(0.7) translateY(80px);
+                filter: blur(16px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.4);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #6a1b9a 0%, #003a8c 100%);
+            color: #fff;
+            padding: 32px 48px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            font-size: 2rem;
+            font-weight: 600;
+            transform: scale(0.7);
+            animation: modal-grow 0.4s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+        }
+        @keyframes modal-grow {
+            from { transform: scale(0.7); }
+            to { transform: scale(1); }
+        }
+        h1 {
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(106,27,154,0.2);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="form-container">
+            <form action="">
+                <h1>Oturum Aç</h1>  
+                    <div class="input-box">
+                        <input type="text" name="username" placeholder=" " autocomplete="off" required>
+                        <span class="char">Kullanıcı Adı</span>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder=" " autocomplete="off">
+                        <span class="char">Şifre</span>
+                    </div>
+                    <div class="remember-forgot">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Beni Hatırla!</label>
+                    </div>
+                    <button type="button" class="btn">Giriş Yap</button>
+                    <button type="button" class="signup-btn">Hesabınız yok mu? Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-message">Giriş başarılı!</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.btn');
+            button.addEventListener('click', function(e) {
+                const username = document.querySelector('input[name="username"]').value.trim();
+                const password = document.querySelector('input[name="password"]').value;
+                const modal = document.getElementById('success-modal');
+                const modalMessage = modal.querySelector('.modal-message');
+                
+                // Boş kontrol
+                if (!username || !password) {
+                    modalMessage.textContent = "Lütfen tüm alanları doldurun!";
+                    modal.classList.add('show');
+                    setTimeout(() => {
+                        modal.classList.remove('show');
+                    }, 2000);
+                    return;
+                }
+                
+                // Kayıtlı kullanıcıları kontrol et
+                const kullanicilar = JSON.parse(localStorage.getItem('kullanicilar') || '{}');
+                
+                if (kullanicilar[username] && kullanicilar[username] === password) {
+                    modalMessage.textContent = "Giriş başarılı!";
+                    modal.classList.add('show');
+                    
+                    // Aktif kullanıcıyı kaydet
+                    localStorage.setItem('aktifKullanici', username);
+                    
+                    // 2 saniye sonra ana menüye yönlendir
+                    setTimeout(() => {
+                        window.location.href = "anamenu.html";
+                    }, 2000);
+                } else {
+                    modalMessage.textContent = "Kullanıcı adı veya şifre yanlış!";
+                    modal.classList.add('show');
+                    setTimeout(() => {
+                        modal.classList.remove('show');
+                    }, 2000);
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() { 
+            const button = document.querySelector('.signup-btn');
+            button.addEventListener('click', function(e) {
+                window.location.href = "kayit.html";
+            });
+        });
+
+        // Enter tuşu ile giriş
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
