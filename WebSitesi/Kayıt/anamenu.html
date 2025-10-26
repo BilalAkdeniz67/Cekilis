@@ -494,56 +494,95 @@
         const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co'; // Buraya kendi URL'ini yaz
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ'; // Buraya kendi anon key'ini yaz
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // Sayfa yüklendiğinde
         window.addEventListener('DOMContentLoaded', function() {
+            // Debug: Tüm localStorage'ı kontrol et
+            console.log('Tüm localStorage:', localStorage);
+            console.log('aktifKullanici değeri:', localStorage.getItem('aktifKullanici'));
+            
             // Oturum kontrolü
             const kullanici = localStorage.getItem('aktifKullanici');
+            console.log('LocalStorage kullanıcı:', kullanici); // Debug için
             if (!kullanici) {
+                console.log('Kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
                 // Tarayıcı için relative yol kullanın
                 window.location.href = '/Kayıt/index.html';
                 return;
             }
             
             aktifKullanici = kullanici;
-            document.getElementById('userName').textContent = aktifKullanici;
+            
+            // Kullanıcı adını güncelle - birden fazla yöntem dene
+            const userNameElement = document.getElementById('userName');
+            console.log('userName elementi:', userNameElement);
+            
+            if (userNameElement) {
+                userNameElement.textContent = aktifKullanici;
+                userNameElement.innerHTML = aktifKullanici;
+                console.log('Kullanıcı adı güncellendi:', aktifKullanici);
+            } else {
+                console.log('userName elementi bulunamadı!');
+                // Alternatif yöntem - tüm span elementlerini kontrol et
+                const spans = document.querySelectorAll('span');
+                spans.forEach(span => {
+                    if (span.textContent === 'Kullanıcı') {
+                        span.textContent = aktifKullanici;
+                        console.log('Alternatif yöntemle güncellendi');
+                    }
+                });
+            }
             
             // Çekiliş verilerini yükle
             cekilisVerileriYukle();
         });
 
         // Çekiliş verilerini yükle
-        function cekilisVerileriYukle() {
-            const cekilisler = JSON.parse(localStorage.getItem('cekilisler') || '{}');
-            const kullaniciCekilisler = JSON.parse(localStorage.getItem('kullaniciCekilisler_' + aktifKullanici) || '[]');
-            
-            // Her çekiliş için katılımcı sayısını güncelle
-            const cekilisKeys = {
-                '475 VP': { sayacId: 'vp-katilimci', buttonId: 'btn-vp' },
-                'Steam 50TL': { sayacId: 'steam-katilimci', buttonId: 'btn-steam' },
-                '600 UC': { sayacId: 'pubg-katilimci', buttonId: 'btn-pubg' },
-                'Discord Nitro': { sayacId: 'discord-katilimci', buttonId: 'btn-discord' },
-                '1380 RP': { sayacId: 'lol-katilimci', buttonId: 'btn-lol' },
-                'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
-            };
-            
-            Object.keys(cekilisKeys).forEach(key => {
-                const katilimcilar = cekilisler[key] || [];
-                const sayac = document.getElementById(cekilisKeys[key].sayacId);
-                const buton = document.getElementById(cekilisKeys[key].buttonId);
+        async function cekilisVerileriYukle() {
+            try {
+                // Supabase'den katılımları çek
+                const { data: katilimlar, error } = await supabaseClient
+                    .from('katilimlar')
+                    .select('cekilis_adi, kullanici_adi');
                 
-                if (sayac) {
-                    sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
+                if (error) {
+                    console.error('Katılımlar yüklenirken hata:', error);
+                    return;
                 }
                 
-                // Kullanıcı zaten katıldıysa butonu değiştir
-                if (kullaniciCekilisler.includes(key) && buton) {
-                    buton.textContent = '✓ KATILDINIZ';
-                    buton.classList.add('katildi');
-                    buton.disabled = true;
-                }
-            });
+                // Her çekiliş için katılımcı sayısını hesapla
+                const cekilisKeys = {
+                    '475 VP': { sayacId: 'vp-katilimci', buttonId: 'btn-vp' },
+                    'Steam 50TL': { sayacId: 'steam-katilimci', buttonId: 'btn-steam' },
+                    '600 UC': { sayacId: 'pubg-katilimci', buttonId: 'btn-pubg' },
+                    'Discord Nitro': { sayacId: 'discord-katilimci', buttonId: 'btn-discord' },
+                    '1380 RP': { sayacId: 'lol-katilimci', buttonId: 'btn-lol' },
+                    'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
+                };
+                
+                Object.keys(cekilisKeys).forEach(key => {
+                    // Bu çekilişe katılan kullanıcıları filtrele
+                    const katilimcilar = katilimlar.filter(k => k.cekilis_adi === key);
+                    const sayac = document.getElementById(cekilisKeys[key].sayacId);
+                    const buton = document.getElementById(cekilisKeys[key].buttonId);
+                    
+                    if (sayac) {
+                        sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
+                    }
+                    
+                    // Kullanıcı zaten katıldıysa butonu değiştir
+                    const kullaniciKatildi = katilimcilar.some(k => k.kullanici_adi === aktifKullanici);
+                    if (kullaniciKatildi && buton) {
+                        buton.textContent = '✓ KATILDINIZ';
+                        buton.classList.add('katildi');
+                        buton.disabled = true;
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Çekiliş verileri yüklenirken hata:', error);
+            }
         }
 
         // Çekilişe katıl
@@ -616,41 +655,52 @@
         }
 
         // Çekilişe kaydet
-        function cekiliseKaydet() {
-            // Çekiliş verilerini al
-            const cekilisler = JSON.parse(localStorage.getItem('cekilisler') || '{}');
-            
-            // Bu çekilişe ait katılımcı listesi
-            if (!cekilisler[aktifCekilis]) {
-                cekilisler[aktifCekilis] = [];
-            }
-            
-            // Kullanıcıyı ekle
-            if (!cekilisler[aktifCekilis].includes(aktifKullanici)) {
-                cekilisler[aktifCekilis].push(aktifKullanici);
-                localStorage.setItem('cekilisler', JSON.stringify(cekilisler));
+        async function cekiliseKaydet() {
+            try {
+                console.log('Katılım kaydediliyor:', { kullanici_adi: aktifKullanici, cekilis_adi: aktifCekilis });
                 
-                // Kullanıcının katıldığı çekilişleri kaydet
-                const kullaniciCekilisler = JSON.parse(localStorage.getItem('kullaniciCekilisler_' + aktifKullanici) || '[]');
-                kullaniciCekilisler.push(aktifCekilis);
-                localStorage.setItem('kullaniciCekilisler_' + aktifKullanici, JSON.stringify(kullaniciCekilisler));
+                // Supabase'e katılımı kaydet
+                const { data, error } = await supabaseClient
+                    .from('katilimlar')
+                    .insert([{
+                        kullanici_adi: aktifKullanici,
+                        cekilis_adi: aktifCekilis
+                    }])
+                    .select();
+                
+                console.log('Supabase yanıtı:', { data, error });
+                
+                if (error) {
+                    console.error('Katılım kaydedilirken hata:', error);
+                    if (error.code === '23505') { // Unique constraint violation
+                        document.getElementById('durumMesaj').innerHTML = '<span style="color: #ff6b6b; font-size: 18px;">Bu çekilişe zaten katıldınız!</span>';
+                    } else {
+                        document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
+                    }
+                    return;
+                }
+                
+                // Başarılı!
+                document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
+                document.getElementById('reklamBtn').style.display = 'none';
+                
+                // Butonu güncelle
+                if (aktifButon) {
+                    aktifButon.textContent = '✓ KATILDINIZ';
+                    aktifButon.classList.add('katildi');
+                    aktifButon.disabled = true;
+                }
+                
+                // 3 saniye sonra modalı kapat ve verileri yenile
+                setTimeout(async () => {
+                    modalKapat();
+                    await cekilisVerileriYukle();
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Beklenmeyen hata:', error);
+                document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
             }
-            
-            document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
-            document.getElementById('reklamBtn').style.display = 'none';
-            
-            // Butonu güncelle
-            if (aktifButon) {
-                aktifButon.textContent = '✓ KATILDINIZ';
-                aktifButon.classList.add('katildi');
-                aktifButon.disabled = true;
-            }
-            
-            // 3 saniye sonra modalı kapat ve verileri yenile
-            setTimeout(() => {
-                modalKapat();
-                cekilisVerileriYukle();
-            }, 3000);
         }
 
         // Modal kapat
