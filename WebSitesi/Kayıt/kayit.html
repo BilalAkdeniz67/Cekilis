@@ -6,6 +6,8 @@
     <title>Kayıt Ol - Çekiliş Merkezi</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Supabase Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
@@ -48,20 +50,18 @@
             color: #d9e4f4;
             font-size: 14px;
         }
-
         .wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
         }
-
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .btn {
             padding: 10px 20px;
             background-color: #6a1b9a;
@@ -73,10 +73,14 @@
             margin-top: 10px;
             align-self: center;
             transition: background 0.2s;
+            min-width: 200px;
         }
-
         .btn:hover {
             background-color: #8e24aa;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .form-container {
             background: rgba(255,255,255,0.1);
@@ -123,10 +127,11 @@
             padding: 32px 48px;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 600;
             transform: scale(0.7);
             animation: modal-grow 0.4s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+            text-align: center;
         }
         @keyframes modal-grow {
             from { transform: scale(0.7); }
@@ -141,47 +146,65 @@
             text-shadow: 0 2px 8px rgba(106,27,154,0.2);
             margin-bottom: 30px;
         }
-
         .login-btn {
             padding: 10px 20px;
-            background-color: #6a1b9a;
+            background-color: transparent;
             color: #dbdbdb;
-            border: none;
+            border: 2px solid #6a1b9a;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
             align-self: center;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            min-width: 200px;
         }
-
         .login-btn:hover {
-            background-color: #8e24aa;
+            background-color: #6a1b9a;
+            color: #fff;
+        }
+        .config-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc107;
+            font-size: 14px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="form-container">
-            <form action="">
+            <!-- UYARI: Supabase bilgilerini gir -->
+            <div class="config-warning" id="configWarning">
+                ⚠️ Supabase bilgilerini güncelle! (JavaScript kodunda)
+            </div>
+            
+            <form id="kayitForm">
                 <h1>Kayıt Ol</h1>  
-                    <div class="input-box">
-                        <input type="text" name="username" placeholder=" " autocomplete="off" required>
-                        <span class="char">Kullanıcı Adı</span>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" name="password" placeholder=" " autocomplete="off" required>
-                        <span class="char">Şifre</span>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" name="confirm-password"  placeholder=" " autocomplete="off" required>
-                        <span class="char">Şifreyi Onayla</span>
-                    </div>
-                    <button type="button" class="btn">Kayıt Ol</button>
-                    <button type="button" class="login-btn">Hesabınız var mı? Giriş Yap</button>
+                <div class="input-box">
+                    <input type="text" name="username" placeholder=" " autocomplete="off" required>
+                    <span class="char">Kullanıcı Adı</span>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" placeholder=" " autocomplete="off" required>
+                    <span class="char">Şifre</span>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="confirm-password" placeholder=" " autocomplete="off" required>
+                    <span class="char">Şifreyi Onayla</span>
+                </div>
+                <button type="submit" class="btn">Kayıt Ol</button>
+                <button type="button" class="login-btn" onclick="window.location.href='index.html'">
+                    Hesabınız var mı? Giriş Yap
+                </button>
             </form>
         </div>
     </div>
+    
     <div id="success-modal" class="modal">
         <div class="modal-content">
             <span class="modal-message">Hesap Oluşturuldu</span>
@@ -189,93 +212,149 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const button = document.querySelector('.btn');
-            button.addEventListener('click', function() {
-                const username = document.querySelector('input[name="username"]').value.trim();
-                const password = document.querySelector('input[name="password"]').value;
-                const confirmPassword = document.querySelector('input[name="confirm-password"]').value;
-                const modal = document.getElementById('success-modal');
-                const modalMessage = modal.querySelector('.modal-message');
+        // ============================================
+        // SUPABASE AYARLARI - BURAYA KENDİ BİLGİLERİNİ YAZ!
+        // ============================================
+        
+        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
+        
+        // Supabase client oluştur
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            // Bağlantı başarılı, uyarıyı gizle
+            if (SUPABASE_URL !== 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
+                document.getElementById('configWarning').style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Supabase bağlantı hatası:', error);
+        }
+        
+        // ============================================
+        // KAYIT FONKSİYONU
+        // ============================================
+        
+        document.getElementById('kayitForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.querySelector('input[name="username"]').value.trim();
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirm-password"]').value;
+            const submitBtn = document.querySelector('.btn');
+            
+            // Validasyon
+            if (!username || !password || !confirmPassword) {
+                showModal('Lütfen tüm alanları doldurun!', false);
+                return;
+            }
+            
+            if (username.length < 3) {
+                showModal('Kullanıcı adı en az 3 karakter olmalı!', false);
+                return;
+            }
+            
+            if (password.length < 6) {
+                showModal('Şifre en az 6 karakter olmalı!', false);
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showModal('Şifreler eşleşmiyor!', false);
+                return;
+            }
+            
+            // Supabase kontrolü
+            if (!supabase || SUPABASE_URL === 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
+                showModal('⚠️ Supabase bilgilerini güncelle!', false);
+                return;
+            }
+            
+            // Butonu devre dışı bırak
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Kayıt yapılıyor...';
+            
+            try {
+                // Kullanıcı var mı kontrol et
+                const { data: existingUser } = await supabase
+                    .from('kullanicilar')
+                    .select('id')
+                    .eq('kullanici_adi', username)
+                    .maybeSingle();
                 
-                // Boş kontrol
-                if (!username || !password || !confirmPassword) {
-                    modalMessage.textContent = "Lütfen tüm alanları doldurun!";
-                    modal.classList.add('show');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                    }, 2000);
+                if (existingUser) {
+                    showModal('Bu kullanıcı adı zaten kullanılıyor!', false);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kayıt Ol';
                     return;
                 }
                 
-                // Kullanıcı adı kontrolü
-                if (username.length < 3) {
-                    modalMessage.textContent = "Kullanıcı adı en az 3 karakter olmalı!";
-                    modal.classList.add('show');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                    }, 2000);
+                // Şifreyi hashle (basit versiyon - production'da bcrypt kullan)
+                const hashedPassword = btoa(password);
+                
+                // Yeni kullanıcı ekle
+                const { data, error } = await supabase
+                    .from('kullanicilar')
+                    .insert([{
+                        kullanici_adi: username,
+                        sifre: hashedPassword
+                    }])
+                    .select();
+                
+                if (error) {
+                    console.error('Kayıt hatası:', error);
+                    showModal('Kayıt sırasında hata oluştu!', false);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kayıt Ol';
                     return;
                 }
                 
-                // Şifre kontrolü
-                if (password.length < 6) {
-                    modalMessage.textContent = "Şifre en az 6 karakter olmalı!";
-                    modal.classList.add('show');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                    }, 2000);
-                    return;
-                }
-                
-                // Şifre eşleşme kontrolü
-                if (password !== confirmPassword) {
-                    modalMessage.textContent = "Şifreler eşleşmiyor!";
-                    modal.classList.add('show');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                    }, 2000);
-                    return;
-                }
-                
-                // Kullanıcıları al
-                const kullanicilar = JSON.parse(localStorage.getItem('kullanicilar') || '{}');
-                
-                // Kullanıcı zaten var mı kontrol et
-                if (kullanicilar[username]) {
-                    modalMessage.textContent = "Bu kullanıcı adı zaten kullanılıyor!";
-                    modal.classList.add('show');
-                    setTimeout(() => {
-                        modal.classList.remove('show');
-                    }, 2000);
-                    return;
-                }
-                
-                // Yeni kullanıcı kaydet
-                kullanicilar[username] = password;
-                localStorage.setItem('kullanicilar', JSON.stringify(kullanicilar));
-                
-                modalMessage.textContent = "Hesap başarıyla oluşturuldu!";
-                modal.classList.add('show');
+                // Başarılı!
+                showModal('✅ Hesap başarıyla oluşturuldu!', true);
                 
                 // 2 saniye sonra giriş sayfasına yönlendir
                 setTimeout(() => {
-                    window.location.href = "index.html";
+                    window.location.href = 'index.html';
                 }, 2000);
-            });
+                
+            } catch (error) {
+                console.error('Beklenmeyen hata:', error);
+                showModal('Bir hata oluştu: ' + error.message, false);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kayıt Ol';
+            }
         });
-
-        document.addEventListener('DOMContentLoaded', function() { 
-            const button = document.querySelector('.login-btn');
-            button.addEventListener('click', function(){
-                window.location.href = "index.html";
-            });
-        });
-
+        
+        // ============================================
+        // MODAL GÖSTER
+        // ============================================
+        
+        function showModal(message, success) {
+            const modal = document.getElementById('success-modal');
+            const modalMessage = modal.querySelector('.modal-message');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalMessage.textContent = message;
+            
+            // Renk değiştir
+            if (success) {
+                modalContent.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            } else {
+                modalContent.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+            }
+            
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+            }, 2000);
+        }
+        
         // Enter tuşu ile kayıt
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                document.querySelector('.btn').click();
+                const form = document.getElementById('kayitForm');
+                form.dispatchEvent(new Event('submit'));
             }
         });
     </script>
