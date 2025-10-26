@@ -3,344 +3,692 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oturum Aç - Çekiliş Merkezi</title>
+    <title>Çekiliş Merkezi - Ana Menü</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Supabase Kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
-            font-family: 'Montserrat', Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-        }
-        .input-box {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 15px;
-        }
-        .input-box input {
-            width: 100%;
-            padding: 18px 10px 10px 16px;
-            font-size: 16px;
-            background: rgba(255,255,255,0.15);
-            color: #f3f3f3;
-            border: 1px solid #3b3b3b;
-            border-radius: 5px;
-            outline: none;
             box-sizing: border-box;
         }
-        .input-box .char {
-            position: absolute;
-            left: 16px;
-            top: 18px;
-            color: #ffffff;
-            pointer-events: none;
-            transition: top 0.2s cubic-bezier(.68,-0.55,.27,1.55), color 0.2s, font-size 0.2s;
-            background: rgba(255, 255, 255, 0.25);
-            padding: 0 4px;
-            border-radius: 6px;
-            font-size: 16px;
+
+        body {
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .input-box input:focus + .char,
-        .input-box input:not(:placeholder-shown) + .char {
-            top: -10px;
-            color: #d9e4f4;
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            border-bottom: 2px solid #6a1b9a;
+            box-shadow: 0 4px 20px rgba(106, 27, 154, 0.3);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(106, 27, 154, 0.2);
+            color: #ff006e;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(106, 27, 154, 0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid #6a1b9a;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .logout-btn {
+            background: #ff006e;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #d6005c;
+            transform: scale(1.05);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e, #6a1b9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(106, 27, 154, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
+        }
+
+        /* Çekiliş Grid */
+        .cekilisler {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .cekilis-card {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16162a 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #6a1b9a;
+            box-shadow: 0 8px 32px rgba(106, 27, 154, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cekilis-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(106, 27, 154, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cekilis-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff006e;
+            box-shadow: 0 12px 48px rgba(255, 0, 110, 0.4);
+        }
+
+        .cekilis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cekilis-tag {
+            background: linear-gradient(45deg, #ff006e, #6a1b9a);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .cekilis-sure {
+            color: #ff006e;
+            font-weight: bold;
             font-size: 14px;
         }
-        .wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .btn {
-            padding: 10px 20px;
-            background-color: #6a1b9a;
-            color: #f3f3f3;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            align-self: center;
-            transition: background 0.2s;
-            min-width: 200px;
-        }
-        .btn:hover {
-            background-color: #8e24aa;
-        }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .signup-btn {
-            padding: 10px 20px;
-            background-color: transparent;
-            color: #f3f3f3;
-            border: 2px solid #6a1b9a;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            align-self: center;
-            transition: all 0.2s;
-            min-width: 200px;
-        }
-        .signup-btn:hover {
-            background-color: #6a1b9a;
-        }
-        .remember-forgot {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin: 20px 0;
-        }
-        .remember-forgot input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #6a1b9a;
-            margin-right: 10px;
-        }
-        .remember-forgot label {
-            font-size: 16px;
-            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+
+        .cekilis-baslik {
+            font-size: 24px;
+            margin-bottom: 15px;
             color: #fff;
-            font-weight: 500;
-            cursor: pointer;
+            position: relative;
+            z-index: 1;
         }
-        .form-container {
-            background: rgba(255,255,255,0.1);
-            padding: 40px;
+
+        .cekilis-detay {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #aaa;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .katilim-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            border: none;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-            animation: site-in 1.6s cubic-bezier(.77,0,.18,1);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
         }
-        @keyframes site-in {
-            from {
-                opacity: 0;
-                transform: scale(0.7) translateY(80px);
-                filter: blur(16px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-                filter: blur(0);
-            }
+
+        .katilim-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.6);
         }
+
+        .katilim-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #666;
+        }
+
+        .katilim-btn.katildi {
+            background: linear-gradient(45deg, #00c853, #00e676);
+        }
+
+        /* Modal */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
-            background: rgba(0,0,0,0.4);
-            z-index: 9999;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s;
+            display: flex;
         }
+
         .modal.show {
             opacity: 1;
             pointer-events: auto;
         }
+
         .modal-content {
-            background: linear-gradient(135deg, #6a1b9a 0%, #003a8c 100%);
-            color: #fff;
-            padding: 32px 48px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            font-size: 1.5rem;
-            font-weight: 600;
+            background: linear-gradient(145deg, #1a1a2e, #16162a);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #6a1b9a;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(106, 27, 154, 0.5);
             transform: scale(0.7);
             animation: modal-grow 0.4s cubic-bezier(.68,-0.55,.27,1.55) forwards;
-            text-align: center;
         }
+
         @keyframes modal-grow {
             from { transform: scale(0.7); }
             to { transform: scale(1); }
         }
-        h1 {
-            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #fff;
-            text-shadow: 0 2px 8px rgba(106,27,154,0.2);
-            margin-bottom: 30px;
-        }
-        .config-warning {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
+
+        .modal h2 {
             margin-bottom: 20px;
-            border: 2px solid #ffc107;
-            font-size: 14px;
-            text-align: center;
+            color: #ff006e;
+        }
+
+        .reklam-sayac {
+            font-size: 48px;
+            color: #6a1b9a;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        .reklam-progress {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .progress-dot {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.active {
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            box-shadow: 0 0 15px rgba(106, 27, 154, 0.8);
+        }
+
+        .reklam-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff006e, #6a1b9a);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        .reklam-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .reklam-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .kapat-btn {
+            background: #333;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 14px;
+            }
+
+            .cekilisler {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="form-container">
-            <!-- UYARI: Supabase bilgilerini gir -->
-            <div class="config-warning" id="configWarning">
-                ⚠️ Supabase bilgilerini güncelle! (JavaScript kodunda)
+    <header>
+        <nav>
+            <div class="logo">🎁 ÇEKİLİŞ MERKEZİ</div>
+            <ul class="nav-links">
+                <li><a href="#anasayfa">Ana Sayfa</a></li>
+                <li><a href="#cekilisler">Çekilişler</a></li>
+                <li><a href="#kazananlar">Kazananlar</a></li>
+                <li class="user-info">
+                    <span class="user-name" id="userName">Kullanıcı</span>
+                    <button class="logout-btn" onclick="cikisYap()">Çıkış</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Ücretsiz Ödüller Kazan!</h1>
+        <p>Sadece 5 reklam izleyerek çekilişlere katıl ve değerli ödüller kazan!</p>
+    </section>
+
+    <section class="cekilisler" id="cekilisler">
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">VALORANT</span>
+                <span class="cekilis-sure">⏰ 2 Gün Kaldı</span>
             </div>
-            
-            <form id="loginForm">
-                <h1>Oturum Aç</h1>  
-                <div class="input-box">
-                    <input type="text" name="username" placeholder=" " autocomplete="off" required>
-                    <span class="char">Kullanıcı Adı</span>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="password" placeholder=" " autocomplete="off" required>
-                    <span class="char">Şifre</span>
-                </div>
-                <div class="remember-forgot">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Beni Hatırla!</label>
-                </div>
-                <button type="submit" class="btn">Giriş Yap</button>
-                <button type="button" class="signup-btn" onclick="window.location.href='kayit.html'">
-                    Hesabınız yok mu? Kayıt Ol
-                </button>
-            </form>
+            <h3 class="cekilis-baslik">475 Valorant Point</h3>
+            <div class="cekilis-detay">
+                <span id="vp-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 1 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('475 VP', this)" id="btn-vp">ÇEKİLİŞE KATIL</button>
         </div>
-    </div>
-    
-    <div id="success-modal" class="modal">
+
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">STEAM</span>
+                <span class="cekilis-sure">⏰ 5 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">50 TL Steam Cüzdan Kodu</h3>
+            <div class="cekilis-detay">
+                <span id="steam-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 3 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Steam 50TL', this)" id="btn-steam">ÇEKİLİŞE KATIL</button>
+        </div>
+
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">PUBG</span>
+                <span class="cekilis-sure">⏰ 1 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">600 UC PUBG Mobile</h3>
+            <div class="cekilis-detay">
+                <span id="pubg-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 2 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('600 UC', this)" id="btn-pubg">ÇEKİLİŞE KATIL</button>
+        </div>
+
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">DISCORD</span>
+                <span class="cekilis-sure">⏰ 3 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">Discord Nitro (1 Ay)</h3>
+            <div class="cekilis-detay">
+                <span id="discord-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 5 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Discord Nitro', this)" id="btn-discord">ÇEKİLİŞE KATIL</button>
+        </div>
+
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">LEAGUE OF LEGENDS</span>
+                <span class="cekilis-sure">⏰ 4 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">1380 RP League of Legends</h3>
+            <div class="cekilis-detay">
+                <span id="lol-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 2 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('1380 RP', this)" id="btn-lol">ÇEKİLİŞE KATIL</button>
+        </div>
+
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">NETFLIX</span>
+                <span class="cekilis-sure">⏰ 7 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">Netflix Premium (1 Ay)</h3>
+            <div class="cekilis-detay">
+                <span id="netflix-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 10 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Netflix', this)" id="btn-netflix">ÇEKİLİŞE KATIL</button>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="reklamModal">
         <div class="modal-content">
-            <span class="modal-message">Giriş başarılı!</span>
+            <h2>Çekilişe Katılım</h2>
+            <p>Çekilişe katılmak için 5 reklam izlemeniz gerekmektedir.</p>
+            <div class="reklam-progress">
+                <div class="progress-dot" id="dot1"></div>
+                <div class="progress-dot" id="dot2"></div>
+                <div class="progress-dot" id="dot3"></div>
+                <div class="progress-dot" id="dot4"></div>
+                <div class="progress-dot" id="dot5"></div>
+            </div>
+            <div class="reklam-sayac" id="reklamSayac">5</div>
+            <p id="durumMesaj">Reklam izlemek için butona tıklayın</p>
+            <button class="reklam-btn" id="reklamBtn" onclick="reklamIzle()">REKLAM İZLE</button>
+            <button class="reklam-btn kapat-btn" onclick="modalKapat()">KAPAT</button>
         </div>
     </div>
-    
-    <script>
-        // ============================================
-        // SUPABASE AYARLARI - BURAYA KENDİ BİLGİLERİNİ YAZ!
-        // ============================================
-        
-        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
-        
-        // Supabase client oluştur
-        let supabase;
-        try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            // Bağlantı başarılı, uyarıyı gizle
-            if (SUPABASE_URL !== 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
-                document.getElementById('configWarning').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Supabase bağlantı hatası:', error);
-        }
-        
-        // ============================================
-        // GİRİŞ FONKSİYONU
-        // ============================================
-        
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const username = document.querySelector('input[name="username"]').value.trim();
-            const password = document.querySelector('input[name="password"]').value;
-            const submitBtn = document.querySelector('.btn');
-            
-            // Validasyon
-            if (!username || !password) {
-                showModal('Lütfen tüm alanları doldurun!', false);
+
+        <script>
+        // Kullanıcı sistemi
+        let aktifKullanici = null;
+        let kalanReklam = 5;
+        let aktifCekilis = '';
+        let aktifButon = null;
+        let reklamIntervalId = null;
+        let reklamSaniye = 0;
+
+        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co'; // Buraya kendi URL'ini yaz
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ'; // Buraya kendi anon key'ini yaz
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('DOMContentLoaded', function() {
+            // Oturum kontrolü
+            const kullanici = localStorage.getItem('aktifKullanici');
+            if (!kullanici) {
+                // Tarayıcı için relative yol kullanın
+                window.location.href = '/Kayıt/index.html';
                 return;
             }
             
-            // Supabase kontrolü
-            if (!supabase || SUPABASE_URL === 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
-                showModal('⚠️ Supabase bilgilerini güncelle!', false);
-                return;
-            }
+            aktifKullanici = kullanici;
+            document.getElementById('userName').textContent = aktifKullanici;
             
-            // Butonu devre dışı bırak
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Giriş yapılıyor...';
-            
-            try {
-                // Şifreyi hashle
-                const hashedPassword = btoa(password);
-                
-                // Kullanıcıyı bul
-                const { data, error } = await supabase
-                    .from('kullanicilar')
-                    .select('id, kullanici_adi')
-                    .eq('kullanici_adi', username)
-                    .eq('sifre', hashedPassword)
-                    .maybeSingle();
-                
-                if (error) {
-                    console.error('Giriş hatası:', error);
-                    showModal('Giriş sırasında hata oluştu!', false);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Giriş Yap';
-                    return;
-                }
-                
-                if (!data) {
-                    showModal('Kullanıcı adı veya şifre yanlış!', false);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Giriş Yap';
-                    return;
-                }
-                
-                // Kullanıcı bilgilerini localStorage'a kaydet
-                localStorage.setItem('aktifKullanici', data.kullanici_adi);
-                
-                // Başarılı!
-                showModal('✅ Giriş başarılı!', true);
-                
-                // 1.5 saniye sonra ana menüye yönlendir
-                setTimeout(() => {
-                    window.location.href = 'anamenu.html';
-                }, 1500);
-                
-            } catch (error) {
-                console.error('Beklenmeyen hata:', error);
-                showModal('Bir hata oluştu: ' + error.message, false);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Giriş Yap';
-            }
+            // Çekiliş verilerini yükle
+            cekilisVerileriYukle();
         });
-        
-        // ============================================
-        // MODAL GÖSTER
-        // ============================================
-        
-        function showModal(message, success) {
-            const modal = document.getElementById('success-modal');
-            const modalMessage = modal.querySelector('.modal-message');
-            const modalContent = modal.querySelector('.modal-content');
+
+        // Çekiliş verilerini yükle
+        function cekilisVerileriYukle() {
+            const cekilisler = JSON.parse(localStorage.getItem('cekilisler') || '{}');
+            const kullaniciCekilisler = JSON.parse(localStorage.getItem('kullaniciCekilisler_' + aktifKullanici) || '[]');
             
-            modalMessage.textContent = message;
-            if (success) {
-                modalContent.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
-            } else {
-                modalContent.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
+            // Her çekiliş için katılımcı sayısını güncelle
+            const cekilisKeys = {
+                '475 VP': { sayacId: 'vp-katilimci', buttonId: 'btn-vp' },
+                'Steam 50TL': { sayacId: 'steam-katilimci', buttonId: 'btn-steam' },
+                '600 UC': { sayacId: 'pubg-katilimci', buttonId: 'btn-pubg' },
+                'Discord Nitro': { sayacId: 'discord-katilimci', buttonId: 'btn-discord' },
+                '1380 RP': { sayacId: 'lol-katilimci', buttonId: 'btn-lol' },
+                'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
+            };
+            
+            Object.keys(cekilisKeys).forEach(key => {
+                const katilimcilar = cekilisler[key] || [];
+                const sayac = document.getElementById(cekilisKeys[key].sayacId);
+                const buton = document.getElementById(cekilisKeys[key].buttonId);
+                
+                if (sayac) {
+                    sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
+                }
+                
+                // Kullanıcı zaten katıldıysa butonu değiştir
+                if (kullaniciCekilisler.includes(key) && buton) {
+                    buton.textContent = '✓ KATILDINIZ';
+                    buton.classList.add('katildi');
+                    buton.disabled = true;
+                }
+            });
+        }
+
+        // Çekilişe katıl
+        function cekiliseKatil(cekilisAdi, buton) {
+            aktifCekilis = cekilisAdi;
+            aktifButon = buton;
+            kalanReklam = 5;
+            
+            document.getElementById('reklamModal').classList.add('show');
+            document.getElementById('reklamSayac').textContent = kalanReklam;
+            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
+            document.getElementById('reklamBtn').disabled = false;
+            document.getElementById('reklamBtn').style.display = 'inline-block';
+            
+            // Progress dotları sıfırla
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('dot' + i).classList.remove('active');
             }
-            modal.classList.add('show');
+            
+            // Eğer önceki interval çalışıyorsa temizle
+            if (reklamIntervalId) {
+                clearInterval(reklamIntervalId);
+                reklamIntervalId = null;
+            }
+        }
+
+        // Reklam izle
+        function reklamIzle() {
+            if (kalanReklam > 0) {
+                const reklamIndex = 5 - kalanReklam;
+                
+                // Reklam penceresi aç (popup engellenebilir)
+                try {
+                    const w = window.open('https://www.google.com/search?q=reklam+' + (reklamIndex + 1), '_blank');
+                    if (w) try { w.opener = null; } catch(e){/* ignore */} 
+                } catch (e) { /* ignore */ }
+                
+                // Progress güncelle
+                const dot = document.getElementById('dot' + (reklamIndex + 1));
+                if (dot) dot.classList.add('active');
+                
+                // 30 saniye bekleme
+                document.getElementById('reklamBtn').disabled = true;
+                document.getElementById('durumMesaj').textContent = 'Reklam izleniyor... Lütfen 30 saniye bekleyin';
+                
+                reklamSaniye = 5;
+                if (reklamIntervalId) {
+                    clearInterval(reklamIntervalId);
+                }
+                reklamIntervalId = setInterval(() => {
+                    reklamSaniye--;
+                    document.getElementById('durumMesaj').textContent = `Reklam izleniyor... ${reklamSaniye} saniye`;
+                    
+                    if (reklamSaniye <= 0) {
+                        clearInterval(reklamIntervalId);
+                        reklamIntervalId = null;
+                        kalanReklam--;
+                        document.getElementById('reklamSayac').textContent = kalanReklam;
+                        
+                        if (kalanReklam > 0) {
+                            document.getElementById('reklamBtn').disabled = false;
+                            document.getElementById('durumMesaj').textContent = `Kalan reklam: ${kalanReklam}`;
+                        } else {
+                            // Çekilişe kaydet
+                            cekiliseKaydet();
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        // Çekilişe kaydet
+        function cekiliseKaydet() {
+            // Çekiliş verilerini al
+            const cekilisler = JSON.parse(localStorage.getItem('cekilisler') || '{}');
+            
+            // Bu çekilişe ait katılımcı listesi
+            if (!cekilisler[aktifCekilis]) {
+                cekilisler[aktifCekilis] = [];
+            }
+            
+            // Kullanıcıyı ekle
+            if (!cekilisler[aktifCekilis].includes(aktifKullanici)) {
+                cekilisler[aktifCekilis].push(aktifKullanici);
+                localStorage.setItem('cekilisler', JSON.stringify(cekilisler));
+                
+                // Kullanıcının katıldığı çekilişleri kaydet
+                const kullaniciCekilisler = JSON.parse(localStorage.getItem('kullaniciCekilisler_' + aktifKullanici) || '[]');
+                kullaniciCekilisler.push(aktifCekilis);
+                localStorage.setItem('kullaniciCekilisler_' + aktifKullanici, JSON.stringify(kullaniciCekilisler));
+            }
+            
+            document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
+            document.getElementById('reklamBtn').style.display = 'none';
+            
+            // Butonu güncelle
+            if (aktifButon) {
+                aktifButon.textContent = '✓ KATILDINIZ';
+                aktifButon.classList.add('katildi');
+                aktifButon.disabled = true;
+            }
+            
+            // 3 saniye sonra modalı kapat ve verileri yenile
             setTimeout(() => {
-                modal.classList.remove('show');
-            }, 2000);
+                modalKapat();
+                cekilisVerileriYukle();
+            }, 3000);
+        }
+
+        // Modal kapat
+        function modalKapat() {
+            document.getElementById('reklamModal').classList.remove('show');
+            document.getElementById('reklamBtn').style.display = 'inline-block';
+            kalanReklam = 5;
+
+            // Eğer reklam sayacı çalışıyorsa durdur
+            if (reklamIntervalId) {
+                clearInterval(reklamIntervalId);
+                reklamIntervalId = null;
+            }
+
+            // Progress dotlarını ve durum mesajını sıfırla
+            for (let i = 1; i <= 5; i++) {
+                const d = document.getElementById('dot' + i);
+                if (d) d.classList.remove('active');
+            }
+            document.getElementById('reklamSayac').textContent = kalanReklam;
+            document.getElementById('reklamBtn').disabled = false;
+            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
+        }
+
+        // Çıkış yap
+        function cikisYap() {
+            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                localStorage.removeItem('aktifKullanici');
+                window.location.href = '/Kayıt/index.html';
+            }
+        }
+
+        // Modal dışına tıklandığında kapat
+        window.onclick = function(event) {
+            const modal = document.getElementById('reklamModal');
+            if (event.target == modal) {
+                modalKapat();
+            }
         }
     </script>
 </body>
