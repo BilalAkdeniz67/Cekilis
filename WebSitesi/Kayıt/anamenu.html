@@ -6,6 +6,7 @@
     <title>Çekiliş Merkezi - Ana Menü</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -489,6 +490,11 @@
         let aktifButon = null;
         let reklamIntervalId = null;
         let reklamSaniye = 0;
+
+        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co'; // Buraya kendi URL'ini yaz
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ'; // Buraya kendi anon key'ini yaz
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // Sayfa yüklendiğinde
         window.addEventListener('DOMContentLoaded', function() {
