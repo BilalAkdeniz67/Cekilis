@@ -94,7 +94,7 @@
             gap: 15px;
             background: rgba(106, 27, 154, 0.3);
             padding: 10px 20px;
-      _B_z_z_z_z: 25px;
+            border-radius: 25px;
             border: 1px solid #6a1b9a;
         }
 
@@ -143,7 +143,7 @@
 
         @keyframes glow {
             0%, 100% { filter: drop-shadow(0 0 20px rgba(106, 27, 154, 0.5)); }
-      _A_z_z_z: { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
         }
 
         .cekilisler {
@@ -226,7 +226,7 @@
             justify-content: space-between;
             margin-bottom: 20px;
             color: #aaa;
-    _B_z_z: 14px;
+            font-size: 14px;
             position: relative;
             z-index: 1;
             flex-wrap: wrap;
@@ -245,7 +245,7 @@
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-      _A_z: 1;
+            z-index: 1;
             box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
         }
 
@@ -419,7 +419,7 @@
                 font-size: 36px;
             }
 
-          _C_l_btn {
+            .reklam-btn {
                 width: 100%;
                 padding: 12px 20px;
                 font-size: 14px;
@@ -521,7 +521,7 @@
 
         <div class="cekilis-card">
             <div class="cekilis-header">
-          _B_s: "cekilis-tag">LEAGUE OF LEGENDS</span>
+                <span class="cekilis-tag">LEAGUE OF LEGENDS</span>
                 <span class="cekilis-sure">⏰ 4 Gün Kaldı</span>
             </div>
             <h3 class="cekilis-baslik">1380 RP League of Legends</h3>
@@ -577,42 +577,31 @@
 
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Sayfa yüklendiğinde (OTOMATİK OTURUM İÇİN GÜNCELLENDİ!)
+        // Sayfa yüklendiğinde (GÜNCELLENDİ!)
         window.addEventListener('DOMContentLoaded', function() {
             console.log('Tüm localStorage:', localStorage);
-            console.log('Tüm sessionStorage:', sessionStorage); // Eklendi
-            
-            // 1. Önce kalıcı (Beni Hatırla) oturumu kontrol et
-            let kullanici = localStorage.getItem('aktifKullanici');
-            
-            // 2. Eğer kalıcı oturum yoksa, geçici (tarayıcı açıkken) oturumu kontrol et
+            console.log('aktifKullanici değeri:', localStorage.getItem('aktifKullanici'));
+            
+            const kullanici = localStorage.getItem('aktifKullanici');
+            console.log('LocalStorage kullanıcı:', kullanici);
+            
             if (!kullanici) {
-                kullanici = sessionStorage.getItem('aktifKullanici');
-                console.log('SessionStorage kullanıcısı:', kullanici);
-            } else {
-                console.log('LocalStorage kullanıcısı:', kullanici);
-            }
-    
-            // 3. Eğer İKİSİNDE DE yoksa, giriş sayfasına yönlendir
-            if (!kullanici) {
-                console.log('Aktif kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
+                console.log('Kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
                 window.location.href = 'index.html'; // Yol düzeltildi
                 return;
             }
-            
-            // Kullanıcı bulundu, global değişkene ata
+            
             aktifKullanici = kullanici;
-            
+            
             const userNameElement = document.getElementById('userName');
             console.log('userName elementi:', userNameElement);
-            
+            
             if (userNameElement) {
                 userNameElement.textContent = aktifKullanici;
-                userNameElement.innerHTML = aktifKullanici; // Orijinal kodda vardı
+                userNameElement.innerHTML = aktifKullanici;
                 console.log('Kullanıcı adı güncellendi:', aktifKullanici);
             } else {
                 console.log('userName elementi bulunamadı!');
-                // Orijinal koddaki alternatif yöntem
                 const spans = document.querySelectorAll('span');
                 spans.forEach(span => {
                     if (span.textContent === 'Kullanıcı') {
@@ -621,7 +610,7 @@
                     }
                 });
             }
-            
+            
             cekilisVerileriYukle();
         });
 
@@ -645,10 +634,10 @@
                     'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
                 };
                 
-        _B_z_z.keys(cekilisKeys).forEach(key => {
+                Object.keys(cekilisKeys).forEach(key => {
                     const katilimcilar = katilimlar.filter(k => k.cekilis_adi === key);
                     const sayac = document.getElementById(cekilisKeys[key].sayacId);
-  _A_z_z_z       const buton = document.getElementById(cekilisKeys[key].buttonId);
+                    const buton = document.getElementById(cekilisKeys[key].buttonId);
                     
                     if (sayac) {
                         sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
@@ -751,7 +740,7 @@
                     }
                     return;
                 }
-        _C_z       
+                
                 document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
                 document.getElementById('reklamBtn').style.display = 'none';
                 
@@ -770,7 +759,7 @@
                 console.error('Beklenmeyen hata:', error);
                 document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
             }
-      _C_}
+        }
 
         function modalKapat() {
             document.getElementById('reklamModal').classList.remove('show');
@@ -791,15 +780,12 @@
             document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
         }
 
-        // Çıkış yap (OTOMATİK OTURUM İÇİN GÜNCELLENDİ!)
+        // Çıkış yap (GÜNCELLENDİ!)
         function cikisYap() {
             if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
-                // Hem kalıcı (localStorage) hem de geçici (sessionStorage) oturumu temizle
                 localStorage.removeItem('aktifKullanici');
-                localStorage.removeItem('beniHatirla');
-                sessionStorage.removeItem('aktifKullanici'); // Burası önemli!
-                
-                console.log('Oturum kapatıldı, tüm depolamalar temizlendi');
+                localStorage.removeItem('beniHatirla'); // Bunu da temizle (YENİ!)
+                console.log('Oturum kapatıldı');
                 window.location.href = 'index.html'; // Yol düzeltildi
             }
         }
