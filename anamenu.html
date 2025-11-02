@@ -593,7 +593,7 @@
             console.log('LocalStorage kullanıcı:', kullanici);
             if (!kullanici) {
                 console.log('Kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
-                window.location.href = '/Kayıt/index.html';
+                window.location.href = 'index.html';
                 return;
             }
             
@@ -795,7 +795,7 @@
         function cikisYap() {
             if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
                 localStorage.removeItem('aktifKullanici');
-                window.location.href = '/Kayıt/index.html';
+                window.location.href = 'index.html';
             }
         }
 
@@ -808,4 +808,5 @@
         }
     </script>
 </body>
+
 </html>
