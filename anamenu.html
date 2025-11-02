@@ -1,802 +1,816 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Çekiliş Merkezi - Ana Menü</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Çekiliş Merkezi - Ana Menü</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
 
-        body {
-            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
-            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
-            background-attachment: fixed;
-            color: #fff;
-            min-height: 100vh;
-            position: relative;
-        }
+        body {
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
-            z-index: -1;
-        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #181818 0%, #6a1b9a 50%, #003a8c 100%);
+            z-index: -1;
+        }
 
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px 0;
-            border-bottom: 2px solid #6a1b9a;
-            box-shadow: 0 4px 20px rgba(106, 27, 154, 0.3);
-            width: 100%;
-        }
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            border-bottom: 2px solid #6a1b9a;
+            box-shadow: 0 4px 20px rgba(106, 27, 154, 0.3);
+            width: 100%;
+        }
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #6a1b9a, #ff006e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
 
-        .nav-links a:hover {
-            background: rgba(106, 27, 154, 0.2);
-            color: #ff006e;
-        }
+        .nav-links a:hover {
+            background: rgba(106, 27, 154, 0.2);
+            color: #ff006e;
+        }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(106, 27, 154, 0.3);
-            padding: 10px 20px;
-            border-radius: 25px;
-            border: 1px solid #6a1b9a;
-        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(106, 27, 154, 0.3);
+            padding: 10px 20px;
+      _B_z_z_z_z: 25px;
+            border: 1px solid #6a1b9a;
+        }
 
-        .user-name {
-            font-weight: 600;
-            color: #fff;
-        }
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+        }
 
-        .logout-btn {
-            background: #ff006e;
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
+        .logout-btn {
+            background: #ff006e;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
 
-        .logout-btn:hover {
-            background: #d6005c;
-            transform: scale(1.05);
-        }
+        .logout-btn:hover {
+            background: #d6005c;
+            transform: scale(1.05);
+        }
 
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #6a1b9a, #ff006e, #6a1b9a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite;
-        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e, #6a1b9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite;
+        }
 
-        .hero p {
-            font-size: 20px;
-            color: #ccc;
-            margin-bottom: 40px;
-        }
+        .hero p {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
 
-        @keyframes glow {
-            0%, 100% { filter: drop-shadow(0 0 20px rgba(106, 27, 154, 0.5)); }
-            50% { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
-        }
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(106, 27, 154, 0.5)); }
+      _A_z_z_z: { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
+        }
 
-        .cekilisler {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
+        .cekilisler {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
 
-        .cekilis-card {
-            background: linear-gradient(145deg, #1a1a2e 0%, #16162a 100%);
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #6a1b9a;
-            box-shadow: 0 8px 32px rgba(106, 27, 154, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+        .cekilis-card {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16162a 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #6a1b9a;
+            box-shadow: 0 8px 32px rgba(106, 27, 154, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .cekilis-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(106, 27, 154, 0.1), transparent);
-            animation: shine 3s infinite;
-        }
+        .cekilis-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(106, 27, 154, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
 
-        @keyframes shine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        .cekilis-card:hover {
-            transform: translateY(-10px);
-            border-color: #ff006e;
-            box-shadow: 0 12px 48px rgba(255, 0, 110, 0.4);
-        }
+        .cekilis-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff006e;
+            box-shadow: 0 12px 48px rgba(255, 0, 110, 0.4);
+        }
 
-        .cekilis-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .cekilis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-        .cekilis-tag {
-            background: linear-gradient(45deg, #ff006e, #6a1b9a);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        .cekilis-tag {
+            background: linear-gradient(45deg, #ff006e, #6a1b9a);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
-        .cekilis-sure {
-            color: #ff006e;
-            font-weight: bold;
-            font-size: 14px;
-        }
+        .cekilis-sure {
+            color: #ff006e;
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-        .cekilis-baslik {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #fff;
-            position: relative;
-            z-index: 1;
-        }
+        .cekilis-baslik {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
 
-        .cekilis-detay {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            color: #aaa;
-            font-size: 14px;
-            position: relative;
-            z-index: 1;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .cekilis-detay {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #aaa;
+    _B_z_z: 14px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-        .katilim-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #6a1b9a, #ff006e);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
-        }
+        .katilim-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+      _A_z: 1;
+            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+        }
 
-        .katilim-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.6);
-        }
+        .katilim-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.6);
+        }
 
-        .katilim-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #666;
-        }
+        .katilim-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #666;
+        }
 
-        .katilim-btn.katildi {
-            background: linear-gradient(45deg, #00c853, #00e676);
-        }
+        .katilim-btn.katildi {
+            background: linear-gradient(45deg, #00c853, #00e676);
+        }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            display: flex;
-            padding: 20px;
-        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            display: flex;
+            padding: 20px;
+        }
 
-        .modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-        .modal-content {
-            background: linear-gradient(145deg, #1a1a2e, #16162a);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid #6a1b9a;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(106, 27, 154, 0.5);
-            transform: scale(0.7);
-            animation: modal-grow 0.4s cubic-bezier(.68,-0.55,.27,1.55) forwards;
-        }
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a2e, #16162a);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #6a1b9a;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(106, 27, 154, 0.5);
+            transform: scale(0.7);
+            animation: modal-grow 0.4s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+        }
 
-        @keyframes modal-grow {
-            from { transform: scale(0.7); }
-            to { transform: scale(1); }
-        }
+        @keyframes modal-grow {
+            from { transform: scale(0.7); }
+            to { transform: scale(1); }
+        }
 
-        .modal h2 {
-            margin-bottom: 20px;
-            color: #ff006e;
-        }
+        .modal h2 {
+            margin-bottom: 20px;
+            color: #ff006e;
+        }
 
-        .reklam-sayac {
-            font-size: 48px;
-            color: #6a1b9a;
-            margin: 30px 0;
-            font-weight: bold;
-        }
+        .reklam-sayac {
+            font-size: 48px;
+            color: #6a1b9a;
+            margin: 30px 0;
+            font-weight: bold;
+        }
 
-        .reklam-progress {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
+        .reklam-progress {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
 
-        .progress-dot {
-            width: 15px;
-            height: 15px;
-            background: #333;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
+        .progress-dot {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
 
-        .progress-dot.active {
-            background: linear-gradient(45deg, #6a1b9a, #ff006e);
-            box-shadow: 0 0 15px rgba(106, 27, 154, 0.8);
-        }
+        .progress-dot.active {
+            background: linear-gradient(45deg, #6a1b9a, #ff006e);
+            box-shadow: 0 0 15px rgba(106, 27, 154, 0.8);
+        }
 
-        .reklam-btn {
-            padding: 15px 40px;
-            background: linear-gradient(45deg, #ff006e, #6a1b9a);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px;
-            transition: all 0.3s;
-        }
+        .reklam-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff006e, #6a1b9a);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
 
-        .reklam-btn:hover {
-            transform: scale(1.05);
-        }
+        .reklam-btn:hover {
+            transform: scale(1.05);
+        }
 
-        .reklam-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .reklam-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-        .kapat-btn {
-            background: #333;
-            margin-top: 20px;
-        }
+        .kapat-btn {
+            background: #333;
+            margin-top: 20px;
+        }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 32px;
-            }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
 
-            .hero p {
-                font-size: 16px;
-            }
+            .hero p {
+                font-size: 16px;
+            }
 
-            nav {
-                flex-direction: column;
-                gap: 15px;
-            }
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
 
-            .nav-links {
-                gap: 15px;
-                font-size: 14px;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-            }
+            .nav-links {
+                gap: 15px;
+                font-size: 14px;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
 
-            .nav-links li {
-                width: 100%;
-            }
+            .nav-links li {
+                width: 100%;
+            }
 
-            .cekilisler {
-                grid-template-columns: 1fr;
-                padding: 20px 10px;
-            }
+            .cekilisler {
+                grid-template-columns: 1fr;
+                padding: 20px 10px;
+            }
 
-            .user-info {
-                flex-direction: row;
-                gap: 10px;
-                width: 100%;
-                justify-content: center;
-            }
+            .user-info {
+                flex-direction: row;
+                gap: 10px;
+                width: 100%;
+                justify-content: center;
+            }
 
-            .logo {
-                font-size: 24px;
-            }
+            .logo {
+                font-size: 24px;
+            }
 
-            .cekilis-baslik {
-                font-size: 20px;
-            }
+            .cekilis-baslik {
+                font-size: 20px;
+            }
 
-            .modal-content {
-                padding: 30px 20px;
-                max-width: 90%;
-            }
+            .modal-content {
+                padding: 30px 20px;
+                max-width: 90%;
+            }
 
-            .reklam-sayac {
-                font-size: 36px;
-            }
+            .reklam-sayac {
+                font-size: 36px;
+            }
 
-            .reklam-btn {
-                width: 100%;
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-        }
+          _C_l_btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
 
-        @media (max-width: 320px) {
-            .hero h1 {
-                font-size: 24px;
-            }
+        @media (max-width: 320px) {
+            .hero h1 {
+                font-size: 24px;
+            }
 
-            .logo {
-                font-size: 20px;
-            }
+            .logo {
+                font-size: 20px;
+            }
 
-            .cekilis-card {
-                padding: 15px;
-            }
+            .cekilis-card {
+                padding: 15px;
+            }
 
-            .modal-content {
-                padding: 20px 15px;
-            }
-        }
-    </style>
+            .modal-content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">🎁 ÇEKİLİŞ MERKEZİ</div>
-            <ul class="nav-links">
-                <li><a href="#anasayfa">Ana Sayfa</a></li>
-                <li><a href="#cekilisler">Çekilişler</a></li>
-                <li><a href="#kazananlar">Kazananlar</a></li>
-                <li class="user-info">
-                    <span class="user-name" id="userName">Kullanıcı</span>
-                    <button class="logout-btn" onclick="cikisYap()">Çıkış</button>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <header>
+        <nav>
+            <div class="logo">🎁 ÇEKİLİŞ MERKEZİ</div>
+            <ul class="nav-links">
+                <li><a href="#anasayfa">Ana Sayfa</a></li>
+                <li><a href="#cekilisler">Çekilişler</a></li>
+                <li><a href="#kazananlar">Kazananlar</a></li>
+                <li class="user-info">
+                    <span class="user-name" id="userName">Kullanıcı</span>
+                    <button class="logout-btn" onclick="cikisYap()">Çıkış</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <section class="hero">
-        <h1>Ücretsiz Ödüller Kazan!</h1>
-        <p>Sadece 5 reklam izleyerek çekilişlere katıl ve değerli ödüller kazan!</p>
-    </section>
+    <section class="hero">
+        <h1>Ücretsiz Ödüller Kazan!</h1>
+        <p>Sadece 5 reklam izleyerek çekilişlere katıl ve değerli ödüller kazan!</p>
+    </section>
 
-    <section class="cekilisler" id="cekilisler">
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">VALORANT</span>
-                <span class="cekilis-sure">⏰ 2 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">475 Valorant Point</h3>
-            <div class="cekilis-detay">
-                <span id="vp-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 1 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('475 VP', this)" id="btn-vp">ÇEKİLİŞE KATIL</button>
-        </div>
+    <section class="cekilisler" id="cekilisler">
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">VALORANT</span>
+                <span class="cekilis-sure">⏰ 2 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">475 Valorant Point</h3>
+            <div class="cekilis-detay">
+                <span id="vp-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 1 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('475 VP', this)" id="btn-vp">ÇEKİLİŞE KATIL</button>
+        </div>
 
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">STEAM</span>
-                <span class="cekilis-sure">⏰ 5 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">50 TL Steam Cüzdan Kodu</h3>
-            <div class="cekilis-detay">
-                <span id="steam-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 3 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('Steam 50TL', this)" id="btn-steam">ÇEKİLİŞE KATIL</button>
-        </div>
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">STEAM</span>
+                <span class="cekilis-sure">⏰ 5 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">50 TL Steam Cüzdan Kodu</h3>
+            <div class="cekilis-detay">
+                <span id="steam-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 3 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Steam 50TL', this)" id="btn-steam">ÇEKİLİŞE KATIL</button>
+        </div>
 
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">PUBG</span>
-                <span class="cekilis-sure">⏰ 1 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">600 UC PUBG Mobile</h3>
-            <div class="cekilis-detay">
-                <span id="pubg-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 2 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('600 UC', this)" id="btn-pubg">ÇEKİLİŞE KATIL</button>
-        </div>
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">PUBG</span>
+                <span class="cekilis-sure">⏰ 1 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">600 UC PUBG Mobile</h3>
+            <div class="cekilis-detay">
+                <span id="pubg-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 2 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('600 UC', this)" id="btn-pubg">ÇEKİLİŞE KATIL</button>
+        </div>
 
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">DISCORD</span>
-                <span class="cekilis-sure">⏰ 3 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">Discord Nitro (1 Ay)</h3>
-            <div class="cekilis-detay">
-                <span id="discord-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 5 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('Discord Nitro', this)" id="btn-discord">ÇEKİLİŞE KATIL</button>
-        </div>
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">DISCORD</span>
+                <span class="cekilis-sure">⏰ 3 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">Discord Nitro (1 Ay)</h3>
+            <div class="cekilis-detay">
+                <span id="discord-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 5 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Discord Nitro', this)" id="btn-discord">ÇEKİLİŞE KATIL</button>
+        </div>
 
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">LEAGUE OF LEGENDS</span>
-                <span class="cekilis-sure">⏰ 4 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">1380 RP League of Legends</h3>
-            <div class="cekilis-detay">
-                <span id="lol-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 2 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('1380 RP', this)" id="btn-lol">ÇEKİLİŞE KATIL</button>
-        </div>
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+          _B_s: "cekilis-tag">LEAGUE OF LEGENDS</span>
+                <span class="cekilis-sure">⏰ 4 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">1380 RP League of Legends</h3>
+            <div class="cekilis-detay">
+                <span id="lol-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 2 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('1380 RP', this)" id="btn-lol">ÇEKİLİŞE KATIL</button>
+        </div>
 
-        <div class="cekilis-card">
-            <div class="cekilis-header">
-                <span class="cekilis-tag">NETFLIX</span>
-                <span class="cekilis-sure">⏰ 7 Gün Kaldı</span>
-            </div>
-            <h3 class="cekilis-baslik">Netflix Premium (1 Ay)</h3>
-            <div class="cekilis-detay">
-                <span id="netflix-katilimci">👥 0 Katılımcı</span>
-                <span>🏆 10 Kazanan</span>
-            </div>
-            <button class="katilim-btn" onclick="cekiliseKatil('Netflix', this)" id="btn-netflix">ÇEKİLİŞE KATIL</button>
-        </div>
-    </section>
+        <div class="cekilis-card">
+            <div class="cekilis-header">
+                <span class="cekilis-tag">NETFLIX</span>
+                <span class="cekilis-sure">⏰ 7 Gün Kaldı</span>
+            </div>
+            <h3 class="cekilis-baslik">Netflix Premium (1 Ay)</h3>
+            <div class="cekilis-detay">
+                <span id="netflix-katilimci">👥 0 Katılımcı</span>
+                <span>🏆 10 Kazanan</span>
+            </div>
+            <button class="katilim-btn" onclick="cekiliseKatil('Netflix', this)" id="btn-netflix">ÇEKİLİŞE KATIL</button>
+        </div>
+    </section>
 
-    <div class="modal" id="reklamModal">
-        <div class="modal-content">
-            <h2>Çekilişe Katılım</h2>
-            <p>Çekilişe katılmak için 5 reklam izlemeniz gerekmektedir.</p>
-            <div class="reklam-progress">
-                <div class="progress-dot" id="dot1"></div>
-                <div class="progress-dot" id="dot2"></div>
-                <div class="progress-dot" id="dot3"></div>
-                <div class="progress-dot" id="dot4"></div>
-                <div class="progress-dot" id="dot5"></div>
-            </div>
-            <div class="reklam-sayac" id="reklamSayac">5</div>
-            <p id="durumMesaj">Reklam izlemek için butona tıklayın</p>
-            <button class="reklam-btn" id="reklamBtn" onclick="reklamIzle()">REKLAM İZLE</button>
-            <button class="reklam-btn kapat-btn" onclick="modalKapat()">KAPAT</button>
-        </div>
-    </div>
+    <div class="modal" id="reklamModal">
+        <div class="modal-content">
+            <h2>Çekilişe Katılım</h2>
+            <p>Çekilişe katılmak için 5 reklam izlemeniz gerekmektedir.</p>
+            <div class="reklam-progress">
+                <div class="progress-dot" id="dot1"></div>
+                <div class="progress-dot" id="dot2"></div>
+                <div class="progress-dot" id="dot3"></div>
+                <div class="progress-dot" id="dot4"></div>
+                <div class="progress-dot" id="dot5"></div>
+            </div>
+            <div class="reklam-sayac" id="reklamSayac">5</div>
+            <p id="durumMesaj">Reklam izlemek için butona tıklayın</p>
+            <button class="reklam-btn" id="reklamBtn" onclick="reklamIzle()">REKLAM İZLE</button>
+            <button class="reklam-btn kapat-btn" onclick="modalKapat()">KAPAT</button>
+        </div>
+    </div>
 
-    <script>
-        let aktifKullanici = null;
-        let kalanReklam = 5;
-        let aktifCekilis = '';
-        let aktifButon = null;
-        let reklamIntervalId = null;
-        let reklamSaniye = 0;
+    <script>
+        let aktifKullanici = null;
+        let kalanReklam = 5;
+        let aktifCekilis = '';
+        let aktifButon = null;
+        let reklamIntervalId = null;
+        let reklamSaniye = 0;
 
-        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
+        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
 
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Sayfa yüklendiğinde (GÜNCELLENDİ!)
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('Tüm localStorage:', localStorage);
-            console.log('aktifKullanici değeri:', localStorage.getItem('aktifKullanici'));
-            
-            const kullanici = localStorage.getItem('aktifKullanici');
-            console.log('LocalStorage kullanıcı:', kullanici);
-            
-            if (!kullanici) {
-                console.log('Kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
-                window.location.href = 'index.html'; // Yol düzeltildi
-                return;
-            }
-            
-            aktifKullanici = kullanici;
-            
-            const userNameElement = document.getElementById('userName');
-            console.log('userName elementi:', userNameElement);
-            
-            if (userNameElement) {
-                userNameElement.textContent = aktifKullanici;
-                userNameElement.innerHTML = aktifKullanici;
-                console.log('Kullanıcı adı güncellendi:', aktifKullanici);
-            } else {
-                console.log('userName elementi bulunamadı!');
-                const spans = document.querySelectorAll('span');
-                spans.forEach(span => {
-                    if (span.textContent === 'Kullanıcı') {
-                        span.textContent = aktifKullanici;
-                        console.log('Alternatif yöntemle güncellendi');
-                    }
-                });
-            }
-            
-            cekilisVerileriYukle();
-        });
+        // Sayfa yüklendiğinde (OTOMATİK OTURUM İÇİN GÜNCELLENDİ!)
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Tüm localStorage:', localStorage);
+            console.log('Tüm sessionStorage:', sessionStorage); // Eklendi
+            
+            // 1. Önce kalıcı (Beni Hatırla) oturumu kontrol et
+            let kullanici = localStorage.getItem('aktifKullanici');
+            
+            // 2. Eğer kalıcı oturum yoksa, geçici (tarayıcı açıkken) oturumu kontrol et
+            if (!kullanici) {
+                kullanici = sessionStorage.getItem('aktifKullanici');
+                console.log('SessionStorage kullanıcısı:', kullanici);
+            } else {
+                console.log('LocalStorage kullanıcısı:', kullanici);
+            }
+    
+            // 3. Eğer İKİSİNDE DE yoksa, giriş sayfasına yönlendir
+            if (!kullanici) {
+                console.log('Aktif kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
+                window.location.href = 'index.html'; // Yol düzeltildi
+                return;
+            }
+            
+            // Kullanıcı bulundu, global değişkene ata
+            aktifKullanici = kullanici;
+            
+            const userNameElement = document.getElementById('userName');
+            console.log('userName elementi:', userNameElement);
+            
+            if (userNameElement) {
+                userNameElement.textContent = aktifKullanici;
+                userNameElement.innerHTML = aktifKullanici; // Orijinal kodda vardı
+                console.log('Kullanıcı adı güncellendi:', aktifKullanici);
+            } else {
+                console.log('userName elementi bulunamadı!');
+                // Orijinal koddaki alternatif yöntem
+                const spans = document.querySelectorAll('span');
+                spans.forEach(span => {
+                    if (span.textContent === 'Kullanıcı') {
+                        span.textContent = aktifKullanici;
+                        console.log('Alternatif yöntemle güncellendi');
+                    }
+                });
+            }
+            
+            cekilisVerileriYukle();
+        });
 
-        async function cekilisVerileriYukle() {
-            try {
-                const { data: katilimlar, error } = await supabaseClient
-                    .from('katilimlar')
-                    .select('cekilis_adi, kullanici_adi');
-                
-                if (error) {
-                    console.error('Katılımlar yüklenirken hata:', error);
-                    return;
-                }
-                
-                const cekilisKeys = {
-                    '475 VP': { sayacId: 'vp-katilimci', buttonId: 'btn-vp' },
-                    'Steam 50TL': { sayacId: 'steam-katilimci', buttonId: 'btn-steam' },
-                    '600 UC': { sayacId: 'pubg-katilimci', buttonId: 'btn-pubg' },
-                    'Discord Nitro': { sayacId: 'discord-katilimci', buttonId: 'btn-discord' },
-                    '1380 RP': { sayacId: 'lol-katilimci', buttonId: 'btn-lol' },
-                    'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
-                };
-                
-                Object.keys(cekilisKeys).forEach(key => {
-                    const katilimcilar = katilimlar.filter(k => k.cekilis_adi === key);
-                    const sayac = document.getElementById(cekilisKeys[key].sayacId);
-                    const buton = document.getElementById(cekilisKeys[key].buttonId);
-                    
-                    if (sayac) {
-                        sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
-                    }
-                    
-                    const kullaniciKatildi = katilimcilar.some(k => k.kullanici_adi === aktifKullanici);
-                    if (kullaniciKatildi && buton) {
-                        buton.textContent = '✓ KATILDINIZ';
-                        buton.classList.add('katildi');
-                        buton.disabled = true;
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Çekiliş verileri yüklenirken hata:', error);
-            }
-        }
+        async function cekilisVerileriYukle() {
+            try {
+                const { data: katilimlar, error } = await supabaseClient
+                    .from('katilimlar')
+                    .select('cekilis_adi, kullanici_adi');
+                
+                if (error) {
+                    console.error('Katılımlar yüklenirken hata:', error);
+                    return;
+                }
+                
+                const cekilisKeys = {
+                    '475 VP': { sayacId: 'vp-katilimci', buttonId: 'btn-vp' },
+                    'Steam 50TL': { sayacId: 'steam-katilimci', buttonId: 'btn-steam' },
+                    '600 UC': { sayacId: 'pubg-katilimci', buttonId: 'btn-pubg' },
+                    'Discord Nitro': { sayacId: 'discord-katilimci', buttonId: 'btn-discord' },
+                    '1380 RP': { sayacId: 'lol-katilimci', buttonId: 'btn-lol' },
+                    'Netflix': { sayacId: 'netflix-katilimci', buttonId: 'btn-netflix' }
+                };
+                
+        _B_z_z.keys(cekilisKeys).forEach(key => {
+                    const katilimcilar = katilimlar.filter(k => k.cekilis_adi === key);
+                    const sayac = document.getElementById(cekilisKeys[key].sayacId);
+  _A_z_z_z       const buton = document.getElementById(cekilisKeys[key].buttonId);
+                    
+                    if (sayac) {
+                        sayac.textContent = `👥 ${katilimcilar.length} Katılımcı`;
+                    }
+                    
+                    const kullaniciKatildi = katilimcilar.some(k => k.kullanici_adi === aktifKullanici);
+                    if (kullaniciKatildi && buton) {
+                        buton.textContent = '✓ KATILDINIZ';
+                        buton.classList.add('katildi');
+                        buton.disabled = true;
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Çekiliş verileri yüklenirken hata:', error);
+            }
+        }
 
-        function cekiliseKatil(cekilisAdi, buton) {
-            aktifCekilis = cekilisAdi;
-            aktifButon = buton;
-            kalanReklam = 5;
-            
-            document.getElementById('reklamModal').classList.add('show');
-            document.getElementById('reklamSayac').textContent = kalanReklam;
-            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
-            document.getElementById('reklamBtn').disabled = false;
-            document.getElementById('reklamBtn').style.display = 'inline-block';
-            
-            for (let i = 1; i <= 5; i++) {
-                document.getElementById('dot' + i).classList.remove('active');
-            }
-            
-            if (reklamIntervalId) {
-                clearInterval(reklamIntervalId);
-                reklamIntervalId = null;
-            }
-        }
+        function cekiliseKatil(cekilisAdi, buton) {
+            aktifCekilis = cekilisAdi;
+            aktifButon = buton;
+            kalanReklam = 5;
+            
+            document.getElementById('reklamModal').classList.add('show');
+            document.getElementById('reklamSayac').textContent = kalanReklam;
+            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
+            document.getElementById('reklamBtn').disabled = false;
+            document.getElementById('reklamBtn').style.display = 'inline-block';
+            
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('dot' + i).classList.remove('active');
+            }
+            
+            if (reklamIntervalId) {
+                clearInterval(reklamIntervalId);
+                reklamIntervalId = null;
+            }
+        }
 
-        function reklamIzle() {
-            if (kalanReklam > 0) {
-                const reklamIndex = 5 - kalanReklam;
-                
-                try {
-                    const w = window.open('https://www.google.com/search?q=reklam+' + (reklamIndex + 1), '_blank');
-                    if (w) try { w.opener = null; } catch(e){} 
-                } catch (e) {}
-                
-                const dot = document.getElementById('dot' + (reklamIndex + 1));
-                if (dot) dot.classList.add('active');
-                
-                document.getElementById('reklamBtn').disabled = true;
-                document.getElementById('durumMesaj').textContent = 'Reklam izleniyor... Lütfen 5 saniye bekleyin';
-                
-                reklamSaniye = 5;
-                if (reklamIntervalId) {
-                    clearInterval(reklamIntervalId);
-                }
-                reklamIntervalId = setInterval(() => {
-                    reklamSaniye--;
-                    document.getElementById('durumMesaj').textContent = `Reklam izleniyor... ${reklamSaniye} saniye`;
-                    
-                    if (reklamSaniye <= 0) {
-                        clearInterval(reklamIntervalId);
-                        reklamIntervalId = null;
-                        kalanReklam--;
-                        document.getElementById('reklamSayac').textContent = kalanReklam;
-                        
-                        if (kalanReklam > 0) {
-                            document.getElementById('reklamBtn').disabled = false;
-                            document.getElementById('durumMesaj').textContent = `Kalan reklam: ${kalanReklam}`;
-                        } else {
-                            cekiliseKaydet();
-                        }
-                    }
-                }, 1000);
-            }
-        }
+        function reklamIzle() {
+            if (kalanReklam > 0) {
+                const reklamIndex = 5 - kalanReklam;
+                
+                try {
+                    const w = window.open('https://www.google.com/search?q=reklam+' + (reklamIndex + 1), '_blank');
+                    if (w) try { w.opener = null; } catch(e){} 
+                } catch (e) {}
+                
+                const dot = document.getElementById('dot' + (reklamIndex + 1));
+                if (dot) dot.classList.add('active');
+                
+                document.getElementById('reklamBtn').disabled = true;
+                document.getElementById('durumMesaj').textContent = 'Reklam izleniyor... Lütfen 5 saniye bekleyin';
+                
+                reklamSaniye = 5;
+                if (reklamIntervalId) {
+                    clearInterval(reklamIntervalId);
+                }
+                reklamIntervalId = setInterval(() => {
+                    reklamSaniye--;
+                    document.getElementById('durumMesaj').textContent = `Reklam izleniyor... ${reklamSaniye} saniye`;
+                    
+                    if (reklamSaniye <= 0) {
+                        clearInterval(reklamIntervalId);
+                        reklamIntervalId = null;
+                        kalanReklam--;
+                        document.getElementById('reklamSayac').textContent = kalanReklam;
+                        
+                        if (kalanReklam > 0) {
+                            document.getElementById('reklamBtn').disabled = false;
+                            document.getElementById('durumMesaj').textContent = `Kalan reklam: ${kalanReklam}`;
+                        } else {
+                            cekiliseKaydet();
+                        }
+                    }
+                }, 1000);
+            }
+        }
 
-        async function cekiliseKaydet() {
-            try {
-                console.log('Katılım kaydediliyor:', { kullanici_adi: aktifKullanici, cekilis_adi: aktifCekilis });
-                
-                const { data, error } = await supabaseClient
-                    .from('katilimlar')
-                    .insert([{
-                        kullanici_adi: aktifKullanici,
-                        cekilis_adi: aktifCekilis
-                    }])
-                    .select();
-                
-                console.log('Supabase yanıtı:', { data, error });
-                
-                if (error) {
-                    console.error('Katılım kaydedilirken hata:', error);
-                    if (error.code === '23505') {
-                        document.getElementById('durumMesaj').innerHTML = '<span style="color: #ff6b6b; font-size: 18px;">Bu çekilişe zaten katıldınız!</span>';
-                    } else {
-                        document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
-                    }
-                    return;
-                }
-                
-                document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
-                document.getElementById('reklamBtn').style.display = 'none';
-                
-                if (aktifButon) {
-                    aktifButon.textContent = '✓ KATILDINIZ';
-                    aktifButon.classList.add('katildi');
-                    aktifButon.disabled = true;
-                }
-                
-                setTimeout(async () => {
-                    modalKapat();
-                    await cekilisVerileriYukle();
-                }, 3000);
-                
-            } catch (error) {
-                console.error('Beklenmeyen hata:', error);
-                document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
-            }
-        }
+        async function cekiliseKaydet() {
+            try {
+                console.log('Katılım kaydediliyor:', { kullanici_adi: aktifKullanici, cekilis_adi: aktifCekilis });
+                
+                const { data, error } = await supabaseClient
+                    .from('katilimlar')
+                    .insert([{
+                        kullanici_adi: aktifKullanici,
+                        cekilis_adi: aktifCekilis
+                    }])
+                    .select();
+                
+                console.log('Supabase yanıtı:', { data, error });
+                
+                if (error) {
+                    console.error('Katılım kaydedilirken hata:', error);
+                    if (error.code === '23505') {
+                        document.getElementById('durumMesaj').innerHTML = '<span style="color: #ff6b6b; font-size: 18px;">Bu çekilişe zaten katıldınız!</span>';
+                    } else {
+                        document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
+                    }
+                    return;
+                }
+        _C_z       
+                document.getElementById('durumMesaj').innerHTML = '<span style="color: #00ff88; font-size: 24px; font-weight: bold;">✓ Çekilişe Katıldınız!</span>';
+                document.getElementById('reklamBtn').style.display = 'none';
+                
+                if (aktifButon) {
+                    aktifButon.textContent = '✓ KATILDINIZ';
+                    aktifButon.classList.add('katildi');
+                    aktifButon.disabled = true;
+                }
+                
+                setTimeout(async () => {
+                    modalKapat();
+                    await cekilisVerileriYukle();
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Beklenmeyen hata:', error);
+                document.getElementById('durumMesaj').innerHTML = `<span style="color: #ff6b6b; font-size: 18px;">Hata: ${error.message}</span>`;
+            }
+      _C_}
 
-        function modalKapat() {
-            document.getElementById('reklamModal').classList.remove('show');
-            document.getElementById('reklamBtn').style.display = 'inline-block';
-            kalanReklam = 5;
+        function modalKapat() {
+            document.getElementById('reklamModal').classList.remove('show');
+            document.getElementById('reklamBtn').style.display = 'inline-block';
+            kalanReklam = 5;
 
-            if (reklamIntervalId) {
-                clearInterval(reklamIntervalId);
-                reklamIntervalId = null;
-            }
+            if (reklamIntervalId) {
+                clearInterval(reklamIntervalId);
+                reklamIntervalId = null;
+            }
 
-            for (let i = 1; i <= 5; i++) {
-                const d = document.getElementById('dot' + i);
-                if (d) d.classList.remove('active');
-            }
-            document.getElementById('reklamSayac').textContent = kalanReklam;
-            document.getElementById('reklamBtn').disabled = false;
-            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
-        }
+            for (let i = 1; i <= 5; i++) {
+                const d = document.getElementById('dot' + i);
+                if (d) d.classList.remove('active');
+            }
+            document.getElementById('reklamSayac').textContent = kalanReklam;
+            document.getElementById('reklamBtn').disabled = false;
+            document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
+        }
 
-        // Çıkış yap (GÜNCELLENDİ!)
-        function cikisYap() {
-            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
-                localStorage.removeItem('aktifKullanici');
-                localStorage.removeItem('beniHatirla'); // Bunu da temizle (YENİ!)
-                console.log('Oturum kapatıldı');
-                window.location.href = 'index.html'; // Yol düzeltildi
-            }
-        }
+        // Çıkış yap (OTOMATİK OTURUM İÇİN GÜNCELLENDİ!)
+        function cikisYap() {
+            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                // Hem kalıcı (localStorage) hem de geçici (sessionStorage) oturumu temizle
+                localStorage.removeItem('aktifKullanici');
+                localStorage.removeItem('beniHatirla');
+                sessionStorage.removeItem('aktifKullanici'); // Burası önemli!
+                
+                console.log('Oturum kapatıldı, tüm depolamalar temizlendi');
+                window.location.href = 'index.html'; // Yol düzeltildi
+            }
+        }
 
-        // Modal dışına tıklandığında kapat
-        window.onclick = function(event) {
-            const modal = document.getElementById('reklamModal');
-            if (event.target == modal) {
-                modalKapat();
-            }
-        }
-    </script>
+        // Modal dışına tıklandığında kapat
+        window.onclick = function(event) {
+            const modal = document.getElementById('reklamModal');
+            if (event.target == modal) {
+                modalKapat();
+            }
+        }
+    </script>
 </body>
 </html>
