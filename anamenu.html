@@ -7,9 +7,6 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <meta name="google-adsense-account" content="ca-pub-8774110760741637">
-    <head/>
-    
     <style>
         * {
             margin: 0;
@@ -43,7 +40,6 @@
             z-index: -1;
         }
 
-        /* Header */
         header {
             background: rgba(0, 0, 0, 0.8);
             padding: 20px 0;
@@ -123,7 +119,6 @@
             transform: scale(1.05);
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             padding: 60px 20px;
@@ -151,7 +146,6 @@
             50% { filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5)); }
         }
 
-        /* Çekiliş Grid */
         .cekilisler {
             max-width: 1200px;
             margin: 0 auto;
@@ -270,7 +264,6 @@
             background: linear-gradient(45deg, #00c853, #00e676);
         }
 
-        /* Modal */
         .modal {
             position: fixed;
             top: 0;
@@ -371,7 +364,6 @@
             margin-top: 20px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 32px;
@@ -554,7 +546,6 @@
         </div>
     </section>
 
-    <!-- Modal -->
     <div class="modal" id="reklamModal">
         <div class="modal-content">
             <h2>Çekilişe Katılım</h2>
@@ -574,7 +565,6 @@
     </div>
 
     <script>
-        // Kullanıcı sistemi
         let aktifKullanici = null;
         let kalanReklam = 5;
         let aktifCekilis = '';
@@ -587,16 +577,17 @@
 
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Sayfa yüklendiğinde
+        // Sayfa yüklendiğinde (GÜNCELLENDİ!)
         window.addEventListener('DOMContentLoaded', function() {
             console.log('Tüm localStorage:', localStorage);
             console.log('aktifKullanici değeri:', localStorage.getItem('aktifKullanici'));
             
             const kullanici = localStorage.getItem('aktifKullanici');
             console.log('LocalStorage kullanıcı:', kullanici);
+            
             if (!kullanici) {
                 console.log('Kullanıcı bulunamadı, giriş sayfasına yönlendiriliyor');
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Yol düzeltildi
                 return;
             }
             
@@ -623,7 +614,6 @@
             cekilisVerileriYukle();
         });
 
-        // Çekiliş verilerini yükle
         async function cekilisVerileriYukle() {
             try {
                 const { data: katilimlar, error } = await supabaseClient
@@ -666,7 +656,6 @@
             }
         }
 
-        // Çekilişe katıl
         function cekiliseKatil(cekilisAdi, buton) {
             aktifCekilis = cekilisAdi;
             aktifButon = buton;
@@ -688,7 +677,6 @@
             }
         }
 
-        // Reklam izle
         function reklamIzle() {
             if (kalanReklam > 0) {
                 const reklamIndex = 5 - kalanReklam;
@@ -702,7 +690,7 @@
                 if (dot) dot.classList.add('active');
                 
                 document.getElementById('reklamBtn').disabled = true;
-                document.getElementById('durumMesaj').textContent = 'Reklam izleniyor... Lütfen 30 saniye bekleyin';
+                document.getElementById('durumMesaj').textContent = 'Reklam izleniyor... Lütfen 5 saniye bekleyin';
                 
                 reklamSaniye = 5;
                 if (reklamIntervalId) {
@@ -729,7 +717,6 @@
             }
         }
 
-        // Çekilişe kaydet
         async function cekiliseKaydet() {
             try {
                 console.log('Katılım kaydediliyor:', { kullanici_adi: aktifKullanici, cekilis_adi: aktifCekilis });
@@ -774,7 +761,6 @@
             }
         }
 
-        // Modal kapat
         function modalKapat() {
             document.getElementById('reklamModal').classList.remove('show');
             document.getElementById('reklamBtn').style.display = 'inline-block';
@@ -794,11 +780,13 @@
             document.getElementById('durumMesaj').textContent = 'Reklam izlemek için butona tıklayın';
         }
 
-        // Çıkış yap
+        // Çıkış yap (GÜNCELLENDİ!)
         function cikisYap() {
             if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
                 localStorage.removeItem('aktifKullanici');
-                window.location.href = 'index.html';
+                localStorage.removeItem('beniHatirla'); // Bunu da temizle (YENİ!)
+                console.log('Oturum kapatıldı');
+                window.location.href = 'index.html'; // Yol düzeltildi
             }
         }
 
@@ -811,6 +799,4 @@
         }
     </script>
 </body>
-
 </html>
-
