@@ -332,121 +332,139 @@
         </div>
     </div>
     
-    <script>
-        // ============================================
-        // SUPABASE AYARLARI - BURAYA KENDİ BİLGİLERİNİ YAZ!
-        // ============================================
-        
-        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
-        
-        // Supabase client oluştur
-        let supabase;
-        try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            // Bağlantı başarılı, uyarıyı gizle
-            if (SUPABASE_URL !== 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
-                document.getElementById('configWarning').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Supabase bağlantı hatası:', error);
-        }
-        
-        // ============================================
-        // GİRİŞ FONKSİYONU
-        // ============================================
-        
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const username = document.querySelector('input[name="username"]').value.trim();
-            const password = document.querySelector('input[name="password"]').value;
-            const submitBtn = document.querySelector('.btn');
-            
-            // Validasyon
-            if (!username || !password) {
-                showModal('Lütfen tüm alanları doldurun!', false);
-                return;
-            }
-            
-            // Supabase kontrolü
-            if (!supabase || SUPABASE_URL === 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
-                showModal('⚠️ Supabase bilgilerini güncelle!', false);
-                return;
-            }
-            
-            // Butonu devre dışı bırak
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Giriş yapılıyor...';
-            
-            try {
-                // Şifreyi hashle
-                const hashedPassword = btoa(password);
-                
-                // Kullanıcıyı bul
-                const { data, error } = await supabase
-                    .from('kullanicilar')
-                    .select('id, kullanici_adi')
-                    .eq('kullanici_adi', username)
-                    .eq('sifre', hashedPassword)
-                    .maybeSingle();
-                
-                if (error) {
-                    console.error('Giriş hatası:', error);
-                    showModal('Giriş sırasında hata oluştu!', false);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Giriş Yap';
-                    return;
-                }
-                
-                if (!data) {
-                    showModal('Kullanıcı adı veya şifre yanlış!', false);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Giriş Yap';
-                    return;
-                }
-                
-                // Kullanıcı bilgilerini localStorage'a kaydet
-                localStorage.setItem('aktifKullanici', data.kullanici_adi);
-                
-                // Başarılı!
-                showModal('✅ Giriş başarılı!', true);
-                
-                // 1.5 saniye sonra ana menüye yönlendir
-                setTimeout(() => {
-                    window.location.href = 'anamenu.html';
-                }, 1500);
-                
-            } catch (error) {
-                console.error('Beklenmeyen hata:', error);
-                showModal('Bir hata oluştu: ' + error.message, false);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Giriş Yap';
-            }
-        });
-        
-        // ============================================
-        // MODAL GÖSTER
-        // ============================================
-        
-        function showModal(message, success) {
-            const modal = document.getElementById('success-modal');
-            const modalMessage = modal.querySelector('.modal-message');
-            const modalContent = modal.querySelector('.modal-content');
-            
-            modalMessage.textContent = message;
-            if (success) {
-                modalContent.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
-            } else {
-                modalContent.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-            }
-            modal.classList.add('show');
-            setTimeout(() => {
-                modal.classList.remove('show');
-            }, 2000);
-        }
-    </script>
+   <script>
+        // ============================================
+        // SUPABASE AYARLARI
+        // ============================================
+        
+        const SUPABASE_URL = 'https://bicnxiurztchlvulipxp.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY254aXVyenRjaGx2dWxpcHhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODI1MTEsImV4cCI6MjA3NzA1ODUxMX0.NTsSjmn-8fV68V29D2iyfnztoKmPhnTSKXrkSg1t_lQ';
+        
+        // Supabase client oluştur
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            // Bağlantı başarılı, uyarıyı gizle
+            if (SUPABASE_URL !== 'httpsDEĞİŞTİR') { // Burayı kendi URL'nizle karşılaştırın
+                document.getElementById('configWarning').style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Supabase bağlantı hatası:', error);
+        }
+        
+        // ============================================
+        // GİRİŞ FONKSİYONU
+        // ============================================
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.querySelector('input[name="username"]').value.trim();
+            const password = document.querySelector('input[name="password"]').value;
+            const submitBtn = document.querySelector('.btn');
+            const beniHatirla = document.getElementById('remember').checked; // GÜNCELLENDİ!
+            
+            // Validasyon
+            if (!username || !password) {
+                showModal('Lütfen tüm alanları doldurun!', false);
+                return;
+            }
+            
+            // Supabase kontrolü
+            if (!supabase || SUPABASE_URL === 'https://supabase.com/dashboard/project/bicnxiurztchlvulipxp') {
+                showModal('⚠️ Supabase bilgilerini güncelle!', false);
+                return;
+            }
+            
+            // Butonu devre dışı bırak
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Giriş yapılıyor...';
+            
+            try {
+                // Şifreyi hashle (Güvenlik uyarısına bakın!)
+                const hashedPassword = btoa(password); 
+                
+                // Kullanıcıyı bul
+                const { data, error } = await supabase
+                    .from('kullanicilar')
+                    .select('id, kullanici_adi')
+                    .eq('kullanici_adi', username)
+                    .eq('sifre', hashedPassword)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error('Giriş hatası:', error);
+                    showModal('Giriş sırasında hata oluştu!', false);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Giriş Yap';
+                    return;
+                }
+                
+          _B_z   if (!data) {
+                    showModal('Kullanıcı adı veya şifre yanlış!', false);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Giriş Yap';
+                    return;
+                }
+                
+                // --- OTURUM KAYDETME - GÜNCELLENDİ! ---
+                
+                // Önceki oturumları temizle
+                localStorage.removeItem('aktifKullanici');
+                sessionStorage.removeItem('aktifKullanici');
+                localStorage.removeItem('beniHatirla');
+                
+                if (beniHatirla) {
+                    // "Beni Hatırla" seçiliyse: localStorage'a kaydet (Kalıcı)
+                    localStorage.setItem('aktifKullanici', data.kullanici_adi);
+                    localStorage.setItem('beniHatirla', 'true');
+                    console.log('Kullanıcı localStorage\'a kaydedildi (Kalıcı).');
+                } else {
+                    // "Beni Hatırla" seçili değilse: sessionStorage'a kaydet (Geçici)
+                    sessionStorage.setItem('aktifKullanici', data.kullanici_adi);
+                    console.log('Kullanıcı sessionStorage\'a kaydedildi (Geçici).');
+                }
+                // --- GÜNCELLEME SONU ---
+                
+                // Başarılı!
+                showModal('✅ Giriş başarılı!', true);
+                
+                // 1.5 saniye sonra ana menüye yönlendir
+                setTimeout(() => {
+                    window.location.href = 'anamenu.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Beklenmeyen hata:', error);
+                showModal('Bir hata oluştu: ' + error.message, false);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Giriş Yap';
+T__       }
+        });
+        
+        // ============================================
+        // MODAL GÖSTER
+        // ============================================
+        
+        function showModal(message, success) {
+            const modal = document.getElementById('success-modal');
+            const modalMessage = modal.querySelector('.modal-message');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalMessage.textContent = message;
+            if (success) {
+                modalContent.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
+            } else {
+                modalContent.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
+T__         }
+            modal.classList.add('show');
+            setTimeout(() => {
+                modal.classList.remove('show');
+            }, 2000);
+        }
+    </script>
 </body>
 
 </html>
+
 
